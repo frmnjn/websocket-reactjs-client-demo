@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import SockJsClient from 'react-stomp';
 
-function App() {
+const SOCKET_URL = 'http://localhost:8888/ws-message';
+
+const App = () => {
+  const [message, setMessage] = useState('You server message here.');
+
+  let onConnected = () => {
+    console.log("Connected!!")
+  }
+
+  let onDisconnect = () => {
+    console.log("Disconnected!")
+  }
+
+  let onMessageReceived = (msg) => {
+    console.log(msg.message);
+    setMessage(msg.message);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SockJsClient
+        url={SOCKET_URL}
+        topics={['/topic/message']}
+        onConnect={onConnected}
+        onDisconnect={onDisconnect}
+        onMessage={msg => onMessageReceived(msg)}
+        debug={false}
+      />
+      <div>{message}</div>
     </div>
   );
 }

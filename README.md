@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Library used in this project 
+* sockjs 
+* react-stomp
+
 ## Available Scripts
 
 In the project directory, you can run:
